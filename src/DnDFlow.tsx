@@ -77,25 +77,6 @@ const DnDFlow = () => {
     return { x, y };
   }, []);
 
-  /* 
-  // Función auxiliar para determinar si un punto está dentro de un nodo
-  const isPointInsideNode = (point: XYPosition, node: CustomNode, allNodes: CustomNode[]): boolean => {
-    // Calcular posición absoluta del nodo
-    const absPos = getAbsolutePosition(node, allNodes);
-    
-    const result = (
-      point.x >= absPos.x &&
-      point.x <= absPos.x + (node.width || 0) &&
-      point.y >= absPos.y &&
-      point.y <= absPos.y + (node.height || 0)
-    );
-    
-    console.log(`Punto (${point.x}, ${point.y}) dentro de nodo ${node.id} en (${absPos.x}, ${absPos.y}) con tamaño ${node.width}x${node.height}: ${result ? 'SÍ' : 'NO'}`);
-    
-    return result;
-  };
-  */
-
   const onDrop = useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault();
