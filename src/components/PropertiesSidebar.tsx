@@ -3,8 +3,6 @@ import { useState } from "react";
 export default function PropertiesSidebar() {
   const [selectedNode] = useState(null);
 
-  // Logic to handle node selection and display properties
-
   return (
     <aside>
       {selectedNode ? (
