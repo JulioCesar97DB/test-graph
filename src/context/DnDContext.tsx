@@ -1,9 +1,16 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 
-const DnDContext = createContext([null, (_) => {}]);
+type NodeType = 'subscription' | 'resourceGroup' | 'vnet' | null;
+type DnDContextType = [NodeType, React.Dispatch<React.SetStateAction<NodeType>>];
 
-export const DnDProvider = ({ children }) => {
-  const [type, setType] = useState(null);
+const DnDContext = createContext<DnDContextType>([null, () => {}]);
+
+interface DnDProviderProps {
+  children: ReactNode;
+}
+
+export const DnDProvider = ({ children }: DnDProviderProps) => {
+  const [type, setType] = useState<NodeType>(null);
 
   return (
     <DnDContext.Provider value={[type, setType]}>
@@ -14,6 +21,7 @@ export const DnDProvider = ({ children }) => {
 
 export default DnDContext;
 
-export const useDnD = () => {
+// eslint-disable-next-line react-refresh/only-export-components
+export const useDnD = (): DnDContextType => {
   return useContext(DnDContext);
 }

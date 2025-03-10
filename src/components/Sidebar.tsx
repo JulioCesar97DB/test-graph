@@ -1,9 +1,11 @@
 import { useDnD } from "../context/DnDContext";
 
-export default function Sidebar() {
-  const [_, setType] = useDnD();
+type NodeType = 'subscription' | 'resourceGroup' | 'vnet';
 
-  const onDragStart = (event, nodeType) => {
+export default function Sidebar() {
+  const [ , setType] = useDnD();
+
+  const onDragStart = (event: React.DragEvent<HTMLDivElement>, nodeType: NodeType) => {
     setType(nodeType);
     event.dataTransfer.effectAllowed = 'move';
   };

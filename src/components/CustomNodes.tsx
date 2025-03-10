@@ -1,5 +1,13 @@
 import { memo, useCallback } from 'react';
-import { NodeProps, Handle, Position, NodeResizeControl, useReactFlow } from "@xyflow/react";
+import { NodeProps, Handle, Position, NodeResizeControl, useReactFlow, ResizeParams } from "@xyflow/react";
+
+interface CustomNodeProps extends NodeProps {
+  id: string;
+  data: {
+    label: string;
+    [key: string]: unknown;
+  };
+}
 
 const controlStyle = {
   background: 'transparent',
@@ -29,10 +37,11 @@ function ResizeIcon() {
   );
 }
 
-export const SubscriptionNode = memo(({ id, data }: NodeProps) => {
+export const SubscriptionNode = memo(({ id, data }: CustomNodeProps) => {
   const { setNodes } = useReactFlow();
   
-  const onResize = useCallback((evt, { size }) => {
+  const onResize = useCallback((_: React.MouseEvent, params: ResizeParams) => {
+    const { width, height } = params;
     setNodes((nodes) =>
       nodes.map((node) => {
         if (node.id === id) {
@@ -40,8 +49,8 @@ export const SubscriptionNode = memo(({ id, data }: NodeProps) => {
             ...node,
             style: {
               ...node.style,
-              width: size.width,
-              height: size.height,
+              width,
+              height,
             },
           };
         }
@@ -70,10 +79,11 @@ export const SubscriptionNode = memo(({ id, data }: NodeProps) => {
   );
 });
 
-export const ResourceGroupNode = memo(({ id, data }: NodeProps) => {
+export const ResourceGroupNode = memo(({ id, data }: CustomNodeProps) => {
   const { setNodes } = useReactFlow();
   
-  const onResize = useCallback((evt, { size }) => {
+  const onResize = useCallback((_: React.MouseEvent, params: ResizeParams) => {
+    const { width, height } = params;
     setNodes((nodes) =>
       nodes.map((node) => {
         if (node.id === id) {
@@ -81,8 +91,8 @@ export const ResourceGroupNode = memo(({ id, data }: NodeProps) => {
             ...node,
             style: {
               ...node.style,
-              width: size.width,
-              height: size.height,
+              width,
+              height,
             },
           };
         }
@@ -114,10 +124,11 @@ export const ResourceGroupNode = memo(({ id, data }: NodeProps) => {
   );
 });
 
-export const VnetNode = memo(({ id, data }: NodeProps) => {
+export const VnetNode = memo(({ id, data }: CustomNodeProps) => {
   const { setNodes } = useReactFlow();
   
-  const onResize = useCallback((evt, { size }) => {
+  const onResize = useCallback((_: React.MouseEvent, params: ResizeParams) => {
+    const { width, height } = params;
     setNodes((nodes) =>
       nodes.map((node) => {
         if (node.id === id) {
@@ -125,8 +136,8 @@ export const VnetNode = memo(({ id, data }: NodeProps) => {
             ...node,
             style: {
               ...node.style,
-              width: size.width,
-              height: size.height,
+              width,
+              height,
             },
           };
         }

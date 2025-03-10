@@ -8,6 +8,13 @@ import {
   Controls,
   useReactFlow,
   Background,
+  Node,
+  Edge,
+  Connection,
+  XYPosition,
+  NodeTypes,
+  OnNodesChange,
+  OnEdgesChange
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
@@ -21,31 +28,38 @@ let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 // Define custom node types
-const nodeTypes = {
+const nodeTypes: NodeTypes = {
   subscription: SubscriptionNode,
   resourceGroup: ResourceGroupNode,
   vnet: VnetNode,
 };
 
+// Define tipos personalizados
+interface CustomNode extends Node {
+  width?: number;
+  height?: number;
+  parentId?: string;
+}
+
 const DnDFlow = () => {
-  const reactFlowWrapper = useRef(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const { screenToFlowPosition, getNodes } = useReactFlow();
+  const reactFlowWrapper = useRef<HTMLDivElement>(null);
+  const [nodes, setNodes, onNodesChange] = useNodesState<CustomNode>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+  const { screenToFlowPosition, getNodes } = useReactFlow<CustomNode>();
   const [type] = useDnD();
 
   const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    []
+    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
+    [ setEdges ]
   );
 
-  const onDragOver = useCallback((event) => {
+  const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
   }, []);
 
   // Función auxiliar para calcular la posición absoluta de un nodo
-  const getAbsolutePosition = (node, allNodes) => {
+  const getAbsolutePosition = useCallback((node: CustomNode, allNodes: CustomNode[]): XYPosition => {
     let x = node.position.x;
     let y = node.position.y;
     
@@ -61,10 +75,11 @@ const DnDFlow = () => {
     }
     
     return { x, y };
-  };
+  }, []);
 
+  /* 
   // Función auxiliar para determinar si un punto está dentro de un nodo
-  const isPointInsideNode = (point, node, allNodes) => {
+  const isPointInsideNode = (point: XYPosition, node: CustomNode, allNodes: CustomNode[]): boolean => {
     // Calcular posición absoluta del nodo
     const absPos = getAbsolutePosition(node, allNodes);
     
@@ -79,9 +94,10 @@ const DnDFlow = () => {
     
     return result;
   };
+  */
 
   const onDrop = useCallback(
-    (event) => {
+    (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault();
 
       if (!type) {
@@ -112,7 +128,7 @@ const DnDFlow = () => {
       }
 
       // Inicializar el nuevo nodo
-      const newNode = {
+      const newNode: CustomNode = {
         id: getId(),
         type,
         position,
@@ -122,7 +138,7 @@ const DnDFlow = () => {
       };
 
       // Buscar nodo padre potencial
-      let parentNode = null;
+      let parentNode: CustomNode | null = null;
       
       if (type === 'resourceGroup' || type === 'vnet') {
         // Determinar qué tipo de nodo padre buscamos
@@ -142,9 +158,9 @@ const DnDFlow = () => {
           // Verificación explícita para depuración
           const isInside = 
             position.x >= absolutePos.x &&
-            position.x <= absolutePos.x + node.width &&
+            position.x <= absolutePos.x + (node.width || 0) &&
             position.y >= absolutePos.y &&
-            position.y <= absolutePos.y + node.height;
+            position.y <= absolutePos.y + (node.height || 0);
             
           console.log(`¿Punto (${position.x}, ${position.y}) dentro de ${node.id}?: ${isInside ? 'SÍ' : 'NO'}`);
           
@@ -176,8 +192,8 @@ const DnDFlow = () => {
         
         // Verificar que quepa dentro del padre
         const margin = 10;
-        const maxX = parentNode.width - width - margin;
-        const maxY = parentNode.height - height - margin;
+        const maxX = (parentNode.width || 0) - width - margin;
+        const maxY = (parentNode.height || 0) - height - margin;
         
         if (maxX < margin || maxY < margin) {
           console.log(`El nodo padre es demasiado pequeño para contener un ${type}`);
@@ -197,7 +213,7 @@ const DnDFlow = () => {
       // Añadir el nuevo nodo
       setNodes((nds) => nds.concat(newNode));
     },
-    [screenToFlowPosition, type, getNodes]
+    [screenToFlowPosition, type, getNodes, setNodes, getAbsolutePosition]
   );
 
   return (
@@ -207,8 +223,8 @@ const DnDFlow = () => {
         <ReactFlow
           nodes={nodes}
           edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
+          onNodesChange={onNodesChange as OnNodesChange}
+          onEdgesChange={onEdgesChange as OnEdgesChange}
           onConnect={onConnect}
           onDrop={onDrop}
           onDragOver={onDragOver}
