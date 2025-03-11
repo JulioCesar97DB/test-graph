@@ -1,4 +1,4 @@
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useState, useEffect } from "react";
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -41,6 +41,7 @@ interface CustomNode extends Node {
   width?: number;
   height?: number;
   parentId?: string;
+  type: string;
 }
 
 const DnDFlow = () => {
@@ -49,6 +50,24 @@ const DnDFlow = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const { screenToFlowPosition, getNodes } = useReactFlow<CustomNode>();
   const [type] = useDnD();
+
+  const [selectedNode, setSelectedNode] = useState<CustomNode | null>(null);
+
+  useEffect(() => {
+    if (selectedNode) {
+      const updatedNode = nodes.find((node) => node.id === selectedNode.id);
+      if (updatedNode) {
+        setSelectedNode(updatedNode);
+      } else {
+        setSelectedNode(null);
+      }
+    }
+  }, [nodes, selectedNode]);
+
+  const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
+    event.preventDefault();
+    setSelectedNode(node as CustomNode);
+  }, []);
 
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
@@ -111,7 +130,6 @@ const DnDFlow = () => {
         height = 200;
       }
 
-      // Inicializar el nuevo nodo
       const newNode: CustomNode = {
         id: getId(),
         type,
@@ -121,17 +139,14 @@ const DnDFlow = () => {
         height,
       };
 
-      // Buscar nodo padre potencial
       let parentNode: CustomNode | null = null;
 
       if (type === "resourceGroup" || type === "vnet") {
-        // Determinar qué tipo de nodo padre buscamos
         const parentType =
           type === "resourceGroup" ? "subscription" : "resourceGroup";
 
         console.log(`Buscando nodo padre de tipo: ${parentType}`);
 
-        // Primero, encontrar todos los nodos potenciales del tipo correcto
         const potentialParents = currentNodes.filter(
           (node) => node.type === parentType
         );
@@ -139,14 +154,12 @@ const DnDFlow = () => {
           `Encontrados ${potentialParents.length} nodos de tipo ${parentType}`
         );
 
-        // Para cada potencial padre, verificar si el punto está dentro
         for (const node of potentialParents) {
           const absolutePos = getAbsolutePosition(node, currentNodes);
           console.log(
             `Verificando ${node.id} (${node.type}) en posición absoluta (${absolutePos.x}, ${absolutePos.y}) con tamaño ${node.width}x${node.height}`
           );
 
-          // Verificación explícita para depuración
           const isInside =
             position.x >= absolutePos.x &&
             position.x <= absolutePos.x + (node.width || 0) &&
@@ -164,11 +177,10 @@ const DnDFlow = () => {
               `¡ENCONTRADO! Padre potencial: ${node.id} (${node.type})`
             );
             parentNode = node;
-            break; // Salir del bucle al encontrar un padre
+            break;
           }
         }
 
-        // Si no se encontró un padre adecuado, mostrar error y salir
         if (!parentNode) {
           console.log(
             `No se encontró un nodo ${parentType} donde colocar el ${type}`
@@ -176,20 +188,16 @@ const DnDFlow = () => {
           return;
         }
 
-        // Configurar relación padre-hijo según el estándar de React Flow
         newNode.parentId = parentNode.id;
         newNode.extent = "parent";
 
-        // Calcular posición absoluta del padre para calcular posición relativa
         const absoluteParentPos = getAbsolutePosition(parentNode, currentNodes);
 
-        // Calcular posición relativa al padre
         newNode.position = {
           x: position.x - absoluteParentPos.x,
           y: position.y - absoluteParentPos.y,
         };
 
-        // Verificar que quepa dentro del padre
         const margin = 10;
         const maxX = (parentNode.width || 0) - width - margin;
         const maxY = (parentNode.height || 0) - height - margin;
@@ -201,7 +209,6 @@ const DnDFlow = () => {
           return;
         }
 
-        // Ajustar posición si está fuera de los límites
         if (newNode.position.x < margin) newNode.position.x = margin;
         if (newNode.position.y < margin) newNode.position.y = margin;
         if (newNode.position.x > maxX) newNode.position.x = maxX;
@@ -215,7 +222,6 @@ const DnDFlow = () => {
         );
       }
 
-      // Añadir el nuevo nodo
       setNodes((nds) => nds.concat(newNode));
     },
     [screenToFlowPosition, type, getNodes, setNodes, getAbsolutePosition]
@@ -233,6 +239,7 @@ const DnDFlow = () => {
           onConnect={onConnect}
           onDrop={onDrop}
           onDragOver={onDragOver}
+          onNodeClick={onNodeClick}
           nodeTypes={nodeTypes}
           fitView
           style={{ backgroundColor: "#F7F9FB" }}
@@ -241,7 +248,7 @@ const DnDFlow = () => {
           <Background />
         </ReactFlow>
       </div>
-      <PropertiesSidebar />
+      <PropertiesSidebar selectedNode={selectedNode} />
     </div>
   );
 };
