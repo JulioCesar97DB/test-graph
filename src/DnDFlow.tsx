@@ -15,6 +15,7 @@ import {
   NodeTypes,
   OnNodesChange,
   OnEdgesChange,
+  MiniMap,
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
@@ -227,6 +228,8 @@ const DnDFlow = () => {
     [screenToFlowPosition, type, getNodes, setNodes, getAbsolutePosition]
   );
 
+  const nodeClassName = (node: CustomNode): string => node.type;
+
   return (
     <div className="dndflow flex h-full flex-row">
       <Sidebar />
@@ -244,6 +247,7 @@ const DnDFlow = () => {
           fitView
           style={{ backgroundColor: "#F7F9FB" }}
         >
+          <MiniMap zoomable pannable nodeClassName={nodeClassName} />
           <Controls />
           <Background />
         </ReactFlow>
