@@ -1,130 +1,159 @@
-# 🔍 ReactFlow Diagram Editor
+# ReactFlow Diagram Editor
 
-<div align="center">
-<img alt="React" src="https://img.shields.io/badge/React-19.0.0-61DAFB?logo=react&amp;logoColor=white&amp;style=for-the-badge">
-<img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5.7.2-3178C6?logo=typescript&amp;logoColor=white&amp;style=for-the-badge">
-<img alt="Vite" src="https://img.shields.io/badge/Vite-6.2.0-646CFF?logo=vite&amp;logoColor=white&amp;style=for-the-badge">
-<img alt="TailwindCSS" src="https://img.shields.io/badge/TailwindCSS-4.0.9-38B2AC?logo=tailwind-css&amp;logoColor=white&amp;style=for-the-badge">
-<img alt="ReactFlow" src="https://img.shields.io/badge/ReactFlow-12.4.4-007ACC?style=for-the-badge">
-</div> 
-## 📑 Table of Contents
-- [Project Overview](#-project-overview)
-- [Features](#-features)
-- [Installation](#-installation)
-- [Usage Guide](#-usage-guide)
-- [Project Structure](#-project-structure)
-- [Technologies](#-technologies)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Developer Notes](#-developer-notes)
-## 🌟 Project Overview
-Contributing
-License
-Developer Notes
+![React](https://img.shields.io/badge/React-19.0.0-61DAFB?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.7.2-3178C6?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-6.2.0-646CFF?logo=vite&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.0.9-38B2AC?logo=tailwind-css&logoColor=white)
+![ReactFlow](https://img.shields.io/badge/ReactFlow-12.4.4-007ACC?logo=flow&logoColor=white)
+
+## 📋 Project Overview
+
+An interactive diagram creation tool similar to Draw.io, built with React Flow. Create hierarchical diagrams with drag-and-drop simplicity.
+
+![Project Demo](https://via.placeholder.com/800x400?text=ReactFlow+Diagram+Editor+Demo)
+
 ## ✨ Features
-A powerful, interactive diagram creation tool inspired by Draw.io, built with React Flow. Create sophisticated hierarchical diagrams with an intuitive drag-and-drop interface, nested containers, and real-time property editing.
-## 🚀 Installation
+
+- **Hierarchical Node System** - Create parent-child relationships between nodes
+- **Drag and Drop Interface** - Simple and intuitive diagram building
+- **Multiple Node Types** - Subscription, Resource Group, and VNet nodes
+- **Node Resizing** - Customize node dimensions with the resize handle
+- **Properties Panel** - View and edit node properties in real-time
+- **Mini Map** - Navigate large diagrams with ease
+
+## 🚀 Installation and Setup
+
 ### Prerequisites
+
 - Node.js (v18 or higher)
-- npm or yarn package manager
+- npm or yarn
 
-### Quick Start
+### Installation Steps
 
-# or with yarn
+1. **Clone the repository**
 
+```bash
+git clone https://github.com/yourusername/test-drawio.git
+cd test-drawio
+```
+
+2. **Install dependencies**
+
+```bash
+npm install
+# or
+yarn
+```
+
+3. **Start the development server**
+
+```bash
+npm run dev
+# or
 yarn dev
+```
 
-Then open your browser and navigate to: http://localhost:5173
+4. **Open in your browser**
 
-💻 Usage Guide
-Creating Your Diagram
-<img src="https://via.placeholder.com/300x200?text=Diagram+Creation" align="right" width="30%"/>
-Add Top-Level Nodes:
-
-Drag a Subscription node from the left sidebar onto the canvas
-This will be your top-level container
-Create Nested Resources:
-
-Drag a Resource Group node onto a Subscription node
-Drag a VNet node onto a Resource Group node
+Navigate to `http://localhost:5173` to see the application running.
 
 ## 💻 Usage Guide
 
-### Creating Your Diagram
+### Creating Nodes
 
-<img src="https://via.placeholder.com/300x200?text=Diagram+Creation" align="right" width="30%"/>
+1. Drag a node type from the left sidebar onto the canvas
+2. Nested nodes (Resource Groups, VNets) must be dropped within their parent containers
+3. Click on nodes to see and edit their properties in the right sidebar
 
-#### Add Top-Level Nodes:
+### Node Hierarchy
 
-- Drag a Subscription node from the left sidebar onto the canvas
-- This will be your top-level container
+- **Subscription Nodes** - Top-level containers
+- **Resource Group Nodes** - Must be placed inside Subscription nodes
+- **VNet Nodes** - Must be placed inside Resource Group nodes
 
-#### Create Nested Resources:
-
-- Drag a Resource Group node onto a Subscription node
-- Drag a VNet node onto a Resource Group node
-
-#### Select & Inspect:
+### Editing Nodes
 
 - Click any node to see its properties in the right sidebar
-- Properties update automatically when nodes change
-
-### Node Hierarchy Rules
-
-├── DnDFlow.tsx # Flow diagram core logic
-└── main.tsx # Application entry point
-
-🔧 Technologies
-React - UI library (v19.0)
-TypeScript - Type safety and developer experience
-Vite - Next-generation frontend tooling
-React Flow - Library for building node-based editors and diagrams
-TailwindCSS - Utility-first CSS framework
-👥 Contributing
-Contributions are welcome! Please feel free to submit a Pull Request.
+- Resize nodes using the handle icon at the bottom-right corner
+- Drag nodes to reposition them within their parent containers
 
 ## 🛠️ Project Structure
 
-export default tseslint.config({
-extends: [
-...tseslint.configs.recommendedTypeChecked,
-// Alternatively, use this for stricter rules
-...tseslint.configs.strictTypeChecked,
-// Optionally, add this for stylistic rules
-...tseslint.configs.stylisticTypeChecked,
-],
-languageOptions: {
-parserOptions: {
-project: ['./tsconfig.node.json', './tsconfig.app.json'],
-tsconfigRootDir: import.meta.dirname,
+```
+src/
+├── components/         # UI components
+│   ├── CustomNodes.tsx # Node type definitions
+│   ├── Sidebar.tsx     # Left sidebar with node types
+│   └── PropertiesSidebar.tsx # Right sidebar for properties
+├── context/
+│   └── DnDContext.tsx  # Drag and drop context provider
+├── App.tsx            # Main application component
+├── DnDFlow.tsx        # Flow diagram logic
+└── main.tsx           # Application entry point
+```
 
-## 🔧 Technologies
+## 🔧 Technologies Used
 
-- **React** - UI library (v19.0)
-- **TypeScript** - Type safety and developer experience
-- **Vite** - Next-generation frontend tooling
-- **React Flow** - Library for building node-based editors and diagrams
-- **TailwindCSS** - Utility-first CSS framework
+- **React** - UI library
+- **TypeScript** - Type safety
+- **Vite** - Build tool
+- **React Flow** - Diagram creation library
+- **TailwindCSS** - Styling
 
 ## 👥 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add some amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-Features
-Installation
 
-## 🔍 Developer Notes
+---
 
-<details>
-<summary>ESLint Configuration</summary>
+Made with ❤️ by Julio Cesar Diaz
 
-For production applications, we recommend updating the ESLint configuration to enable type-aware lint rules:
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default tseslint.config({
+  extends: [
+    // Remove ...tseslint.configs.recommended and replace with this
+    ...tseslint.configs.recommendedTypeChecked,
+    // Alternatively, use this for stricter rules
+    ...tseslint.configs.strictTypeChecked,
+    // Optionally, add this for stylistic rules
+    ...tseslint.configs.stylisticTypeChecked,
+  ],
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default tseslint.config({
+  plugins: {
+    // Add the react-x and react-dom plugins
+    'react-x': reactX,
+    'react-dom': reactDom,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended typescript rules
+    ...reactX.configs['recommended-typescript'].rules,
+    ...reactDom.configs.recommended.rules,
+  },
+})
+```
