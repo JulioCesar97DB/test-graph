@@ -108,8 +108,8 @@ export const ResourceGroupNode = memo(({ id, data }: CustomNodeProps) => {
       </NodeResizeControl>
       
       <div style={{ 
-        backgroundColor: 'rgba(0, 0, 200, 0.2)', 
-        border: '1px solid rgba(0, 0, 200, 0.5)',
+        backgroundColor: 'rgba(128, 0, 128, 0.2)', 
+        border: '1px solid rgba(128, 0, 128, 0.5)',
         borderRadius: '10px',
         width: '100%',
         height: '100%',
@@ -153,8 +153,8 @@ export const VnetNode = memo(({ id, data }: CustomNodeProps) => {
       </NodeResizeControl>
       
       <div style={{ 
-        backgroundColor: 'white', 
-        border: '1px solid #ddd', 
+        backgroundColor: 'rgba(0, 120, 212, 0.15)', // Light blue for networking
+        border: '1px solid rgba(0, 120, 212, 0.7)', // Darker blue border
         borderRadius: '10px',
         width: '100%',
         height: '100%',
