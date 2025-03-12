@@ -1,21 +1,11 @@
-interface Node {
-  id: string;
-  type: string;
-  data?: {
-    label?: string;
-  };
-  position: {
-    x: number;
-    y: number;
-  };
-  parentId?: string;
-}
+import { CustomNode } from '../types';
 
 interface PropertiesSidebarProps {
-  selectedNode: Node | null;
+  selectedNode: CustomNode | null;
 }
 
 export default function PropertiesSidebar({ selectedNode }: PropertiesSidebarProps) {
+  console.log('PropertiesSidebar received:', selectedNode);
   return (
     <aside className="w-64 p-4 bg-gray-50 border-l border-gray-200">
       {selectedNode ? (
@@ -35,7 +25,7 @@ export default function PropertiesSidebar({ selectedNode }: PropertiesSidebarPro
             
             <div>
               <label className="block text-sm font-medium text-gray-600">Label</label>
-              <div className="mt-1 text-sm">{selectedNode.data?.label || 'No label'}</div>
+              <div className="mt-1 text-sm">{String(selectedNode.data?.label) || 'No label'}</div>
             </div>
             
             {selectedNode.parentId && (

@@ -7,8 +7,9 @@ import {
   OnNodesChange,
   OnEdgesChange,
   NodeTypes,
+  NodeMouseHandler,
 } from '@xyflow/react';
-import { useNodeManager } from '../hooks/useNodeManager';
+import { useNodeContext } from '../context/NodeContext';
 import { useEdgeManager } from '../hooks/useEdgeManager';
 import { useVnetConnections } from '../hooks/useVnetConnections';
 import { useDnD } from '../context/DnDContext';
@@ -27,7 +28,7 @@ export function FlowCanvas({ nodeTypes }: FlowCanvasProps) {
     onNodesChange, 
     onNodeClick,
     createNode 
-  } = useNodeManager();
+  } = useNodeContext();
   
   const { 
     edges, 
@@ -53,6 +54,15 @@ export function FlowCanvas({ nodeTypes }: FlowCanvasProps) {
 
   const nodeClassName = (node: CustomNode): string => node.type;
 
+  // Create a wrapper function for onNodeClick to ensure proper type handling
+  const handleNodeClick: NodeMouseHandler = useCallback(
+    (event, node) => {
+      console.log('Node clicked in FlowCanvas:', node);
+      onNodeClick(event, node as CustomNode);
+    },
+    [onNodeClick]
+  );
+
   return (
     <div className="flex flex-grow h-svh" ref={reactFlowWrapper}>
       <ReactFlow
@@ -63,7 +73,7 @@ export function FlowCanvas({ nodeTypes }: FlowCanvasProps) {
         onConnect={onConnect}
         onDrop={onDrop}
         onDragOver={onDragOver}
-        onNodeClick={onNodeClick}
+        onNodeClick={handleNodeClick}  // Use our wrapper function here
         nodeTypes={nodeTypes}
         isValidConnection={({ source, target }) => 
           (source && target) ? isValidVnetConnection(source, target) : false

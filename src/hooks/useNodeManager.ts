@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useNodesState, useReactFlow } from '@xyflow/react';
 import { usePositionCalculator } from './usePositionCalculator';
 import { CustomNode } from '../types';
@@ -12,8 +12,24 @@ export function useNodeManager() {
   const { screenToFlowPosition, getNodes } = useReactFlow<CustomNode>();
   const { getAbsolutePosition } = usePositionCalculator();
 
+  // This effect will keep the selected node in sync with its latest state
+  useEffect(() => {
+    if (selectedNode) {
+      const updatedNode = nodes.find((node) => node.id === selectedNode.id);
+      if (updatedNode && updatedNode !== selectedNode) {
+        console.log('Updating selected node with latest state:', updatedNode);
+        setSelectedNode(updatedNode);
+      } else if (!updatedNode) {
+        // Node was deleted
+        console.log('Selected node no longer exists, clearing selection');
+        setSelectedNode(null);
+      }
+    }
+  }, [nodes, selectedNode]);
+
   const onNodeClick = useCallback((event: React.MouseEvent, node: CustomNode) => {
     event.preventDefault();
+    console.log('Setting selected node in useNodeManager:', node);
     setSelectedNode(node);
   }, []);
 
