@@ -10,32 +10,10 @@ interface CustomNodeProps extends NodeProps {
 }
 
 const controlStyle = {
-  background: 'transparent',
+  background: 'black',
   border: 'none',
 };
 
-function ResizeIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      strokeWidth="2"
-      stroke="#ffff"
-      fill="none"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ position: 'absolute', right: 5, bottom: 5 }}
-    >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <polyline points="16 20 20 20 20 16" />
-      <line x1="14" y1="14" x2="20" y2="20" />
-      <polyline points="8 4 4 4 4 8" />
-      <line x1="4" y1="4" x2="10" y2="10" />
-    </svg>
-  );
-}
 
 export const SubscriptionNode = memo(({ id, data }: CustomNodeProps) => {
   const { setNodes } = useReactFlow();
@@ -61,9 +39,7 @@ export const SubscriptionNode = memo(({ id, data }: CustomNodeProps) => {
   
   return (
     <>
-      <NodeResizeControl style={controlStyle} minWidth={200} minHeight={200} onResize={() => onResize}>
-        <ResizeIcon />
-      </NodeResizeControl>
+      <NodeResizeControl style={controlStyle} minWidth={200} minHeight={200} onResize={() => onResize}/>
       
       <div style={{ 
         backgroundColor: 'rgba(0, 200, 0, 0.2)', 
@@ -103,9 +79,7 @@ export const ResourceGroupNode = memo(({ id, data }: CustomNodeProps) => {
   
   return (
     <>
-      <NodeResizeControl style={controlStyle} minWidth={100} minHeight={100} onResize={() => onResize}>
-        <ResizeIcon />
-      </NodeResizeControl>
+      <NodeResizeControl style={controlStyle} minWidth={100} minHeight={100} onResize={() => onResize} />
       
       <div style={{ 
         backgroundColor: 'rgba(128, 0, 128, 0.2)', 
@@ -148,9 +122,7 @@ export const VnetNode = memo(({ id, data }: CustomNodeProps) => {
   
   return (
     <>
-      <NodeResizeControl style={controlStyle} minWidth={70} minHeight={30} onResize={() => onResize}>
-        <ResizeIcon />
-      </NodeResizeControl>
+      <NodeResizeControl style={controlStyle} minWidth={70} minHeight={30} onResize={() => onResize} />
       
       <div style={{ 
         backgroundColor: 'rgba(0, 120, 212, 0.15)',
