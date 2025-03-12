@@ -10,7 +10,7 @@ interface CustomNodeProps extends NodeProps {
 }
 
 const controlStyle = {
-  background: 'black',
+  background: 'transparent',
   border: 'none',
 };
 
