@@ -23,7 +23,6 @@ const DnDFlow = () => {
   const { selectedNode } = useNodeContext();
   const [refreshKey, setRefreshKey] = useState(0);
   
-  // Force a re-render when the selected node changes
   useEffect(() => {
     console.log('Selected node in DnDFlow:', selectedNode);
     setRefreshKey(prev => prev + 1);

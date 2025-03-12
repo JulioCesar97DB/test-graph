@@ -153,8 +153,8 @@ export const VnetNode = memo(({ id, data }: CustomNodeProps) => {
       </NodeResizeControl>
       
       <div style={{ 
-        backgroundColor: 'rgba(0, 120, 212, 0.15)', // Light blue for networking
-        border: '1px solid rgba(0, 120, 212, 0.7)', // Darker blue border
+        backgroundColor: 'rgba(0, 120, 212, 0.15)',
+        border: '1px solid rgba(0, 120, 212, 0.7)',
         borderRadius: '10px',
         width: '100%',
         height: '100%',

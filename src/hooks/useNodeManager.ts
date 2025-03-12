@@ -12,7 +12,6 @@ export function useNodeManager() {
   const { screenToFlowPosition, getNodes } = useReactFlow<CustomNode>();
   const { getAbsolutePosition } = usePositionCalculator();
 
-  // This effect will keep the selected node in sync with its latest state
   useEffect(() => {
     if (selectedNode) {
       const updatedNode = nodes.find((node) => node.id === selectedNode.id);
@@ -20,7 +19,6 @@ export function useNodeManager() {
         console.log('Updating selected node with latest state:', updatedNode);
         setSelectedNode(updatedNode);
       } else if (!updatedNode) {
-        // Node was deleted
         console.log('Selected node no longer exists, clearing selection');
         setSelectedNode(null);
       }

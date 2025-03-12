@@ -54,7 +54,6 @@ export function FlowCanvas({ nodeTypes }: FlowCanvasProps) {
 
   const nodeClassName = (node: CustomNode): string => node.type;
 
-  // Create a wrapper function for onNodeClick to ensure proper type handling
   const handleNodeClick: NodeMouseHandler = useCallback(
     (event, node) => {
       console.log('Node clicked in FlowCanvas:', node);
@@ -73,7 +72,7 @@ export function FlowCanvas({ nodeTypes }: FlowCanvasProps) {
         onConnect={onConnect}
         onDrop={onDrop}
         onDragOver={onDragOver}
-        onNodeClick={handleNodeClick}  // Use our wrapper function here
+        onNodeClick={handleNodeClick}
         nodeTypes={nodeTypes}
         isValidConnection={({ source, target }) => 
           (source && target) ? isValidVnetConnection(source, target) : false
