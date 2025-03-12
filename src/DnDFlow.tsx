@@ -70,9 +70,51 @@ const DnDFlow = () => {
     setSelectedNode(node as CustomNode);
   }, []);
 
+  const isValidVnetConnection = useCallback(
+    (sourceId: string | null, targetId: string | null): boolean => {
+      if (!sourceId || !targetId) return false;
+      
+      const sourceNode = nodes.find((node) => node.id === sourceId);
+      const targetNode = nodes.find((node) => node.id === targetId);
+      
+      // Both must be VNet nodes and in the same Resource Group
+      return (
+        sourceNode?.type === 'vnet' && 
+        targetNode?.type === 'vnet' &&
+        sourceNode.parentId === targetNode.parentId &&
+        sourceNode.parentId !== undefined
+      );
+    },
+    [nodes]
+  );
+
   const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges]
+    (params: Connection) => {
+      // Find source and target nodes
+      const sourceNode = nodes.find((node) => node.id === params.source);
+      const targetNode = nodes.find((node) => node.id === params.target);
+      
+      // Check if both are VNet nodes
+      if (sourceNode?.type === 'vnet' && targetNode?.type === 'vnet') {
+        // Check if they share the same parent (same Resource Group)
+        if (sourceNode.parentId === targetNode.parentId) {
+          // Add the connection
+          setEdges((eds) => addEdge({
+            ...params,
+            animated: true,
+            style: { stroke: '#0078D4', strokeWidth: 2 },
+            label: 'VNet Connection'
+          }, eds));
+        } else {
+          console.log("Cannot connect VNet nodes from different Resource Groups");
+          // You could add a toast/notification here to inform the user
+        }
+      } else {
+        // Default behavior for non-VNet connections
+        setEdges((eds) => addEdge(params, eds));
+      }
+    },
+    [nodes, setEdges]
   );
 
   const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
@@ -244,6 +286,9 @@ const DnDFlow = () => {
           onDragOver={onDragOver}
           onNodeClick={onNodeClick}
           nodeTypes={nodeTypes}
+          isValidConnection={({ source, target }) => 
+            (source && target) ? isValidVnetConnection(source, target) : false
+          }
           fitView
           style={{ backgroundColor: "#F7F9FB" }}
         >
