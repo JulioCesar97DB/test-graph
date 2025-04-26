@@ -11,14 +11,14 @@ export default function Sidebar() {
   };
 
   return (
-    <aside>
-      <div className="dndnode subscription" onDragStart={(event) => onDragStart(event, 'subscription')} draggable>
+    <aside className="space-y-5">
+      <div className="bg-neutral-700 p-3 rounded-md hover:bg-neutral-600 cursor-grab subscription" onDragStart={(event) => onDragStart(event, 'subscription')} draggable>
         Subscription Node
       </div>
-      <div className="dndnode resourceGroup" onDragStart={(event) => onDragStart(event, 'resourceGroup')} draggable>
+      <div className="bg-neutral-700 p-3 rounded-md hover:bg-neutral-600 cursor-grab resourceGroup" onDragStart={(event) => onDragStart(event, 'resourceGroup')} draggable>
         Resource Group Node
       </div>
-      <div className="dndnode vnet" onDragStart={(event) => onDragStart(event, 'vnet')} draggable>
+      <div className="bg-neutral-700 p-3 rounded-md hover:bg-neutral-600 cursor-grab vnet" onDragStart={(event) => onDragStart(event, 'vnet')} draggable>
         VNet Node
       </div>
     </aside>
