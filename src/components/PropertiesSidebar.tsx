@@ -7,36 +7,36 @@ interface PropertiesSidebarProps {
 export default function PropertiesSidebar({ selectedNode }: PropertiesSidebarProps) {
   console.log('PropertiesSidebar received:', selectedNode);
   return (
-    <aside className="w-64 p-4 bg-gray-50 border-l border-gray-200">
+    <aside className="w-64 p-4">
       {selectedNode ? (
         <div>
-          <h3 className="text-lg font-medium mb-4">Properties</h3>
+          <h3 className="text-xl font-medium mb-4">Properties</h3>
           
           <div className="space-y-3">
             <div>
-              <label className="block text-sm font-medium text-gray-600">ID</label>
+              <label className="block text-sm font-medium text-white">ID</label>
               <div className="mt-1 text-sm">{selectedNode.id}</div>
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-600">Type</label>
+              <label className="block text-sm font-medium text-white">Type</label>
               <div className="mt-1 text-sm">{selectedNode.type}</div>
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-600">Label</label>
+              <label className="block text-sm font-medium text-white">Label</label>
               <div className="mt-1 text-sm">{String(selectedNode.data?.label) || 'No label'}</div>
             </div>
             
             {selectedNode.parentId && (
               <div>
-                <label className="block text-sm font-medium text-gray-600">Parent</label>
+                <label className="block text-sm font-medium text-white">Parent</label>
                 <div className="mt-1 text-sm">{selectedNode.parentId}</div>
               </div>
             )}
             
             <div>
-              <label className="block text-sm font-medium text-gray-600">Position</label>
+              <label className="block text-sm font-medium text-white">Position</label>
               <div className="mt-1 text-sm">
                 X: {selectedNode.position.x.toFixed(2)}, Y: {selectedNode.position.y.toFixed(2)}
               </div>
