@@ -8,19 +8,22 @@ body {
 .dndflow {
   display: flex;
   height: 100vh;
+  background: #444;  
 }
 
 aside {
   width: 200px;
   padding: 10px;
-  background: #f0f0f0;
-  border-right: 1px solid #ddd;
+  background: #333;
+  color: #fff;
 }
 
 .dndnode {
   padding: 10px;
   margin-bottom: 10px;
-  background: #fff;
-  border: 1px solid #ddd;
+  background: #444;
+  border: 1px solid #444;
+  rounded: 5px;
+  color: #fff;
   cursor: grab;
 }
