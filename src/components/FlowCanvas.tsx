@@ -63,7 +63,7 @@ export function FlowCanvas({ nodeTypes }: FlowCanvasProps) {
   );
 
   return (
-    <div className="flex flex-grow h-svh" ref={reactFlowWrapper}>
+    <div className="bg-neutral-700 flex flex-grow h-svh" ref={reactFlowWrapper}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -78,7 +78,7 @@ export function FlowCanvas({ nodeTypes }: FlowCanvasProps) {
           (source && target) ? isValidVnetConnection(source, target) : false
         }
         fitView
-        style={{ backgroundColor: "#F7F9FB" }}
+        
       >
         <MiniMap zoomable pannable nodeClassName={nodeClassName} />
         <Controls />
